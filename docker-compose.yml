@@ -1,0 +1,36 @@
+# The below Docker-compose configurations will pull the latest Postgres image from Docker Hub, 
+# build the container, and map port 6500 to the default Postgres port.
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - '6500:5432'
+    volumes:
+      - progresDB:/data/postgres
+    env_file:
+      - ./.env
+    networks:
+      - mynetwork
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dalia-express
+    ports:
+      - '8000:8000'
+    env_file:
+      - ./.env
+    networks:
+      - mynetwork
+    depends_on:
+      - postgres
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  progresDB:
