@@ -1,4 +1,4 @@
-import { Plant } from '../../models/plant';
+import { Plant } from '../models/plant';
 import plantsData from './plant-data';
 
 async function seedPlants() {

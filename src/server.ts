@@ -2,35 +2,32 @@ require("dotenv").config();
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
+import plantRouter from "./routes/plant-routes";
 import { connectDatabase, dbInstance } from "./database/connection";
-import { Plant } from "./models/plant";
 import seedPlants from "./database/seeders/plant-seeder";
 
 const app = express();
 
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
-// app.use(
-//   cors({
-//     origin: ["http://localhost:3000"],
-//     credentials: true,
-//   })
-// );
+app.use(
+	cors({
+		origin: ["http://localhost:3000"],
+		credentials: true,
+  	})
+);
 
 app.get("/api/healthchecker", (req: Request, res: Response) => {
-  res.status(200).json({
-    status: "success",
-    message: "Build CRUD API with Node.js, Express and Sequelize",
+	res.status(200).json({
+    	status: "success",
+    	message: "Build CRUD API with Node.js, Express and Sequelize",
   });
 });
 
-app.get("/api/plants", async (req: Request, res: Response): Promise<Response> => {
-  const allPlants: Plant[] = await Plant.findAll();
-  return res.status(200).json(allPlants);
-});
+app.use("/api/plants", plantRouter);
 
 app.all("*", (req: Request, res: Response) => {
-  res.status(404).json({
+	res.status(404).json({
     status: "fail",
     message: `Route: ${req.originalUrl} does not exist on this server`,
   });
@@ -38,8 +35,7 @@ app.all("*", (req: Request, res: Response) => {
 
 const PORT = 8000;
 app.listen(PORT, async () => {
-	await connectDatabase();
-
+  await connectDatabase();
 	try {
 		await dbInstance.sync({ force: false });
 		await seedPlants();

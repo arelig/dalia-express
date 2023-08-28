@@ -1,6 +1,6 @@
 require("dotenv").config();
 import { Sequelize } from "sequelize-typescript";
-import { Plant } from "../models/plant";
+import { Plant } from "./models/plant";
 
 const POSTGRES_URL = process.env.DATABASE_URL as unknown as string;
 const dbInstance = new Sequelize(POSTGRES_URL);
