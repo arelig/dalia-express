@@ -2,19 +2,20 @@ require("dotenv").config();
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
-import connectDatabase from "./database/connection";
+import { connectDatabase, dbInstance } from "./database/connection";
 import { Plant } from "./models/plant";
+import seedPlants from "./database/seeders/plant-seeder";
 
 const app = express();
 
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["http://localhost:3000"],
+//     credentials: true,
+//   })
+// );
 
 app.get("/api/healthchecker", (req: Request, res: Response) => {
   res.status(200).json({
@@ -37,6 +38,14 @@ app.all("*", (req: Request, res: Response) => {
 
 const PORT = 8000;
 app.listen(PORT, async () => {
-  console.log("🚀Server started Successfully on port 8000");
-  await connectDatabase();
+	await connectDatabase();
+
+	try {
+		await dbInstance.sync({ force: false });
+		await seedPlants();
+		console.log("✅ Synced database and seeded plants successfully...");
+	} catch (error) {
+		console.error("❌ Error:", error);
+	}
+	console.log("🚀Server rocking on port 8000");
 });
