@@ -8,7 +8,6 @@ import {
   UpdatePlantInput,
 } from "../middleware/plant.schema";
 
-//Create plant
 export const createPlant = async (
     req: Request<{}, {}, CreatePlantInput>,
     res: Response

@@ -2,6 +2,7 @@ require("dotenv").config();
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
+import bodyParser from "body-parser"
 import plantRouter from "./routes/plant-routes";
 import { connectDatabase, dbInstance } from "./database/connection";
 import seedPlants from "./database/seeders/plant-seeder";
@@ -9,6 +10,25 @@ import seedPlants from "./database/seeders/plant-seeder";
 const app = express();
 
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
+
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+const options = {
+  swaggerDefinition: {
+    info: {
+      title: "Dalia Express API",
+      version: "1.0.0",
+      description: "API documentation for Dalia Express",
+    },
+  },
+  apis: ["./src/routes/plant-routes.ts"], 
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use(bodyParser.json());
 
 app.use(
 	cors({

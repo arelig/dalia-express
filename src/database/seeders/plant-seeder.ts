@@ -10,9 +10,7 @@ async function seedPlants() {
 				image: plantData.image,
 			});
 		}
-		console.log("✅ Seeded plants successfully...");
 	} catch (error) {
-		console.error("❌ Error seeding plants:", error);
 		throw error;
 	}
 }
