@@ -13,6 +13,7 @@ exports.Plant = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 let Plant = class Plant extends sequelize_typescript_1.Model {
 };
+exports.Plant = Plant;
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
@@ -34,10 +35,9 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Plant.prototype, "image", void 0);
-Plant = __decorate([
+exports.Plant = Plant = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: false,
         tableName: "plants",
     })
 ], Plant);
-exports.Plant = Plant;

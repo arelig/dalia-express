@@ -51,7 +51,7 @@ const updatePlant = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (result[0] === 0) {
             return res.status(404).json({
                 status: "fail",
-                message: "Name with that ID not found",
+                message: "Plant with that ID not found",
             });
         }
         const plant = yield plant_1.Plant.findByPk(req.params.plantId);

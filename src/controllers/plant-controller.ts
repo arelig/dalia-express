@@ -43,7 +43,7 @@ export const createPlant = async (
 
   //update plant
   export const updatePlant = async (
-    req: Request<UpdatePlantInput["params"], {}, UpdatePlantInput["body"]>,
+    req: Request<{plantId: string}, {}, UpdatePlantInput>,
     res: Response
   ) => {
     try {
@@ -59,7 +59,7 @@ export const createPlant = async (
       if (result[0] === 0) {
         return res.status(404).json({
           status: "fail",
-          message: "Name with that ID not found",
+          message: "Plant with that ID not found",
         });
       }
   
