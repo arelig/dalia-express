@@ -1,16 +1,10 @@
-import { Router } from "express";
-import { validate } from "../middleware/validate";
-import {
-  createPlant,
-  deletePlant,
-  findAllPlants,
-  findPlant,
-  updatePlant,
-} from "../controllers/plant-controller";
-import { createPlantSchema, updatePlantSchema } from "../middleware/plant.schema";
-
-const router = Router();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const validate_1 = require("../middleware/validate");
+const plant_controller_1 = require("../controllers/plant-controller");
+const plant_schema_1 = require("../middleware/plant.schema");
+const router = (0, express_1.Router)();
 /**
  * @swagger
  * /api/plants:
@@ -68,10 +62,9 @@ const router = Router();
  *               $ref: '#/components/schemas/Plant'
  */
 router
-  .route("/")
-  .get(findAllPlants)
-  .post(validate(createPlantSchema), createPlant);
-
+    .route("/")
+    .get(plant_controller_1.findAllPlants)
+    .post((0, validate_1.validate)(plant_schema_1.createPlantSchema), plant_controller_1.createPlant);
 /**
  * @swagger
  * /api/plants/{plantId}:
@@ -142,9 +135,8 @@ router
  *         description: Plant successfully deleted.
  */
 router
-  .route("/:plantId")
-  .get(findPlant)
-  .patch(validate(updatePlantSchema), updatePlant)
-  .delete(deletePlant);
-
-export default router;
+    .route("/:plantId")
+    .get(plant_controller_1.findPlant)
+    .patch((0, validate_1.validate)(plant_schema_1.updatePlantSchema), plant_controller_1.updatePlant)
+    .delete(plant_controller_1.deletePlant);
+exports.default = router;
